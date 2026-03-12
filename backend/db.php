@@ -9,10 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-$servername = "localhost";
-$username = "flettedehvaler_";
-$password = "pfTgy5GP";
-$database = "flettedehvaler_";
+//fill these
+$servername = "";
+$username = "";
+$password = "";
+$database = "";
 
 try {
 
