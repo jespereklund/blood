@@ -35,9 +35,9 @@ $stmt = $pdo->prepare(
 
 $stmt->execute([$token]);
 
-$email = $stmt->fetch(PDO::FETCH_ASSOC);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$email) {
+if (!$user) {
 
     echo json_encode([
         "success" => false
@@ -46,12 +46,12 @@ if (!$email) {
     exit();
 }
 
-$email = $email["email"];
+$email = $user["email"];
 
 /* hent log data */
 
 $stmt = $pdo->prepare(
-    "SELECT value, created_at
+    "SELECT blodsukker, note, created_at
      FROM blood2_log
      WHERE email = ?
      ORDER BY created_at ASC"

@@ -38,7 +38,7 @@ async function loadGraph() {
         }
 
         const labels = data.logs.map(v => v.created_at);
-        const values = data.logs.map(v => v.value);
+        const values = data.logs.map(v => v.blodsukker);
 
         const ctx = document.getElementById("chart");
 
@@ -72,13 +72,6 @@ onMount(loadGraph);
 
 <style>
 
-.container {
-    max-width: 500px;
-    margin: auto;
-    padding: 40px;
-    text-align: center;
-}
-
 canvas {
     margin-top: 30px;
 }
@@ -89,7 +82,7 @@ canvas {
 
 </style>
 
-<div class="container">
+<div>
 
 <h1>Grafer</h1>
 
