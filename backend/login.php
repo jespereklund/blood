@@ -17,10 +17,11 @@ $input = json_decode(file_get_contents("php://input"), true);
 $email = $input["email"] ?? "";
 $password = $input["password"] ?? "";
 
+
 /* hent bruger */
 
 $stmt = $pdo->prepare(
-    "SELECT password_hash, salt
+    "SELECT password_hash, salt, token
      FROM blood2_users
      WHERE email = ?"
 );
@@ -42,11 +43,13 @@ if (!$user) {
 
 $hash = $user["password_hash"];
 $salt = $user["salt"];
+$token = $user["token"];
 
 if (password_verify($password . $salt, $hash)) {
 
     echo json_encode([
-        "success" => true
+        "success" => true,
+        "token" => $token
     ]);
 
 } else {

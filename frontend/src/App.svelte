@@ -1,11 +1,12 @@
 <script>
   import Router, { link } from "svelte-spa-router"
+  import { push } from "svelte-spa-router";
 
   import Login from "./routes/Login.svelte"
   import Signup from "./routes/Signup.svelte"
   import ForgotPassword from "./routes/ForgotPassword.svelte"
   import Logger from "./routes/Logger.svelte"
-  import Grafer from "./routes/Graphs.svelte"
+  import Grafer from "./routes/grafer.svelte"
   import Log from "./routes/Log.svelte"
 
 
@@ -16,6 +17,11 @@
     "/logger": Logger,
     "/grafer": Grafer,
     "/log": Log
+  }
+
+  function logout() {
+    localStorage.removeItem("token")
+    push("/");
   }
 </script>
 
@@ -59,6 +65,7 @@
   <a class="navlink" href="#/logger" use:link>Logger</a>
   <a class="navlink" href="#/grafer" use:link>Grafer</a>
   <a class="navlink" href="#/log" use:link>Log</a>
+  <a class="navlink" onclick={logout}>Logout</a>
 </div>
 
 <div class="content">

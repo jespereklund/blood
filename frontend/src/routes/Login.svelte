@@ -30,6 +30,8 @@
 
       if (data.success === true) {
 
+        localStorage.setItem("token", data.token);
+
         push("/logger");
 
       } else {
