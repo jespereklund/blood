@@ -5,6 +5,7 @@ import Chart from "chart.js/auto";
 
 let chart;
 let error = "";
+let logs = []; // gem data til tabel
 
 async function loadGraph() {
 
@@ -37,8 +38,10 @@ async function loadGraph() {
             return;
         }
 
-        const labels = data.logs.map(v => v.created_at);
-        const values = data.logs.map(v => v.blodsukker);
+        logs = data.logs; // gem logs
+
+        const labels = logs.map(v => v.created_at);
+        const values = logs.map(v => v.blodsukker);
 
         const ctx = document.getElementById("chart");
 
@@ -60,11 +63,8 @@ async function loadGraph() {
         });
 
     } catch (e) {
-
         error = "Kunne ikke hente data";
-
     }
-
 }
 
 onMount(loadGraph);
@@ -72,24 +72,57 @@ onMount(loadGraph);
 
 <style>
 
-canvas {
-    margin-top: 30px;
-}
-
 .error {
     color: red;
 }
 
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+
+.chart-container {
+    width: 800px;
+    height: 600px;
+}
 </style>
 
 <div>
 
-<h1>Grafer</h1>
+<h1>Målinger</h1>
 
 {#if error}
 <p class="error">{error}</p>
 {/if}
 
-<canvas id="chart"></canvas>
+<div class="chart-container">
+    <canvas id="chart"></canvas>
+</div>
+
+{#if logs.length > 0}
+<h2>Data</h2>
+
+<table>
+<thead>
+<tr>
+<th>Dato</th>
+<th>Blodsukker</th>
+</tr>
+</thead>
+
+<tbody>
+{#each logs as log}
+<tr>
+<td>{log.created_at}</td>
+<td>{log.blodsukker}</td>
+</tr>
+{/each}
+</tbody>
+</table>
+{/if}
 
 </div>

@@ -63,8 +63,7 @@
   <div class="title">Blodsukker Logger System</div>
   <a class="navlink" href="#/" use:link>Login</a>
   <a class="navlink" href="#/logger" use:link>Logger</a>
-  <a class="navlink" href="#/grafer" use:link>Grafer</a>
-  <a class="navlink" href="#/log" use:link>Log</a>
+  <a class="navlink" href="#/grafer" use:link>Målinger</a>
   <a class="navlink" onclick={logout}>Logout</a>
 </div>
 
