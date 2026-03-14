@@ -111,6 +111,7 @@ th, td {
 <tr>
 <th>Dato</th>
 <th>Blodsukker</th>
+<th>Note</th>
 </tr>
 </thead>
 
@@ -119,6 +120,7 @@ th, td {
 <tr>
 <td>{log.created_at}</td>
 <td>{log.blodsukker}</td>
+<td>{log.note}</td>
 </tr>
 {/each}
 </tbody>
