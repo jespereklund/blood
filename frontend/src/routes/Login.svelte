@@ -153,7 +153,7 @@
 
     <div class="links">
       <a href="#/signup" use:link>Opret bruger</a>
-      <a href="#/glemt-password" use:link>Glemt password?</a>
+      <a href="#/forgot-password" use:link>Glemt password?</a>
     </div>
 
     {#if error}
