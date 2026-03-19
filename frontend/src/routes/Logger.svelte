@@ -1,7 +1,16 @@
 <script>
+  import { onMount } from "svelte";
+  import { push } from "svelte-spa-router";
+
   let blodsukker = "";
   let note = "";
   let message = "";
+
+  onMount(() => {
+    if (localStorage.getItem("token") === null) {
+      push("/")
+    }
+  })
 
   async function sendLog() {
 

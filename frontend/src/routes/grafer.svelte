@@ -7,6 +7,12 @@ let chart;
 let error = "";
 let logs = []; // gem data til tabel
 
+onMount(() => {
+if (localStorage.getItem("token") === null) {
+    push("/")
+}
+})
+
 async function loadGraph() {
 
     const token = localStorage.getItem("token");

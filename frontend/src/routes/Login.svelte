@@ -1,10 +1,18 @@
 <script>
+  import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
   import Router, { link } from "svelte-spa-router"
 
   let email = "";
   let password = "";
   let error = "";
+
+  onMount(() => {
+  if (localStorage.getItem("token") != null) {
+      push("/logger")
+  }
+  })
+
 
   async function login() {
 
