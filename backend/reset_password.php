@@ -98,7 +98,7 @@ try {
             'message' => '3 Linket er udløbet'
         ]);
         exit;
-    }
+    }           
 
     // 🔐 Tjek token
     if (!password_verify($token, $row['token_hash'])) {

@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 //fill these
 $servername = "localhost";
 $username = "flettedehvaler_";
-$password = "pfTgy5GP";
+$password = "";
 $database = "flettedehvaler_";
 
 try {
