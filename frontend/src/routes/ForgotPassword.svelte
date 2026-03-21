@@ -1,8 +1,39 @@
 <script>
   let email = "";
+  let loading = false;
+  let message = "";
+  let success = false;
 
-  function sendReset() {
-    alert("Password reset sendt til: " + email);
+  async function sendReset() {
+    message = "";
+    success = false;
+
+    if (!email) {
+      message = "Indtast din email";
+      return;
+    }
+
+    loading = true;
+
+    try {
+      const formData = new FormData();
+      formData.append("email", email);
+
+      const response = await fetch("https://flettedehvaler.dk/blodsukker/forgot_password.php", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      success = !!data.success;
+      message = data.message || "Hvis emailen findes, er der sendt et reset-link.";
+    } catch (error) {
+      success = false;
+      message = "Der opstod en fejl. Prøv igen.";
+    } finally {
+      loading = false;
+    }
   }
 </script>
 
@@ -70,11 +101,34 @@
   button:hover {
     background: #1565c0;
   }
+
+  button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .message {
+    font-size: 13px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    background: #f1f1f1;
+    color: #333;
+  }
+
+  .message.success {
+    background: #e8f5e9;
+    color: #1b5e20;
+  }
+
+  .message.error {
+    background: #ffebee;
+    color: #b71c1c;
+  }
 </style>
 
 <div class="container">
   <div class="box">
-
     <h1>Glemt password</h1>
 
     <div class="field">
@@ -87,7 +141,18 @@
       >
     </div>
 
-    <button on:click={sendReset}>Send</button>
+    <button on:click={sendReset} disabled={loading}>
+      {#if loading}
+        Sender...
+      {:else}
+        Send
+      {/if}
+    </button>
 
+    {#if message}
+      <div class:success={success} class:error={!success} class="message">
+        {message}
+      </div>
+    {/if}
   </div>
 </div>

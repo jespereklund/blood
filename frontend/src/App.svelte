@@ -8,6 +8,7 @@
   import Logger from "./routes/Logger.svelte"
   import Grafer from "./routes/grafer.svelte"
   import Log from "./routes/Log.svelte"
+  import ResetPassword from "./routes/ResetPassword.svelte";
 
 
   const routes = {
@@ -16,7 +17,8 @@
     "/forgot-password": ForgotPassword,
     "/logger": Logger,
     "/grafer": Grafer,
-    "/log": Log
+    "/log": Log,
+    "/reset-password": ResetPassword
   }
 
   function logout() {
