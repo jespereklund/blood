@@ -28,7 +28,7 @@ function sendMail($email, $subject, $message, $headers) {
     $mail->Port = 587;
     $mail->SMTPAuth = true;
     $mail->Username = $myemail;
-    $mail->Password = 'Sus9Sus8Sus7'; 
+    $mail->Password = ''; 
     $mail->SMTPSecure = 'tls';
     $mail->From = $myemail;
     $mail->FromName = "Bloodsugar Reset Email";
