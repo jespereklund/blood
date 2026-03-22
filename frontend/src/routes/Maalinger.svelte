@@ -43,6 +43,7 @@ async function loadGraph() {
         const labels = logs.map(v => v.created_at);
         const values = logs.map(v => v.blodsukker);
         const ctx = document.getElementById("chart");
+
         chart = new Chart(ctx, {
             type: "line",
             data: {
@@ -58,6 +59,9 @@ async function loadGraph() {
             options: {
                 responsive: true,
                 plugins: {
+                    legend: {
+                        onClick: () => {} // disable klik på legend
+                    },
                     tooltip: {
                         callbacks: {
                             afterBody: function(context) {
@@ -67,7 +71,7 @@ async function loadGraph() {
                             }
                         }
                     }
-                }                
+                }
             }
         });
 
@@ -97,12 +101,19 @@ th, td {
 .chart-container {
     width: 800px;
     height: 600px;
+    margin: 0 auto; /* center graf */
+}
+
+.table-container {
+    display: flex;
+    justify-content: center; /* center tabel */
+    margin-top: 20px;
 }
 </style>
 
 <div>
 
-<h1>Målinger</h1>
+<h1 style="text-align: center;">Målinger</h1>
 
 {#if error}
 <p class="error">{error}</p>
@@ -113,8 +124,9 @@ th, td {
 </div>
 
 {#if logs.length > 0}
-<h2>Data</h2>
+<h2 style="text-align: center;">Data</h2>
 
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -134,6 +146,7 @@ th, td {
 {/each}
 </tbody>
 </table>
+</div>
 {/if}
 
 </div>
