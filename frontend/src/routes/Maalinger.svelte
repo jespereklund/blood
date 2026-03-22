@@ -14,16 +14,12 @@ if (localStorage.getItem("token") === null) {
 })
 
 async function loadGraph() {
-
     const token = localStorage.getItem("token");
-
     if (!token) {
         push("/");
         return;
     }
-
     try {
-
         const res = await fetch(
             "https://www.flettedehvaler.dk/blodsukker/grafer.php",
             {
@@ -38,19 +34,15 @@ async function loadGraph() {
         );
 
         const data = await res.json();
-
         if (!data.success) {
             error = "Adgang nægtet";
             return;
         }
 
         logs = data.logs; // gem logs
-
         const labels = logs.map(v => v.created_at);
         const values = logs.map(v => v.blodsukker);
-
         const ctx = document.getElementById("chart");
-
         chart = new Chart(ctx, {
             type: "line",
             data: {
@@ -64,7 +56,18 @@ async function loadGraph() {
                 ]
             },
             options: {
-                responsive: true
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            afterBody: function(context) {
+                                const index = context[0].dataIndex;
+                                const note = logs[index]?.note;
+                                return note ? `Note: ${note}` : "";
+                            }
+                        }
+                    }
+                }                
             }
         });
 

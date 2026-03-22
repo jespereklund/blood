@@ -13,13 +13,10 @@
   })
 
   async function sendLog() {
-
     message = "";
-
     const token = localStorage.getItem("token");
 
     try {
-
       const res = await fetch(
         "https://www.flettedehvaler.dk/blodsukker/logger.php",
         {
@@ -36,24 +33,17 @@
       );
 
       const data = await res.json();
-
       if (data.success) {
-
         message = "Log gemt";
-
         blodsukker = "";
         note = "";
 
       } else {
-
         message = "Fejl ved logning";
-
       }
 
     } catch (e) {
-
       message = "Server fejl";
-
     }
   }
 </script>

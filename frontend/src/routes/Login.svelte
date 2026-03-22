@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { push } from "svelte-spa-router";
   import Router, { link } from "svelte-spa-router"
+  import { loggedInState } from "../LoggedIn.svelte";
 
   let email = "";
   let password = "";
@@ -15,11 +16,9 @@
 
 
   async function login() {
-
     error = "";
 
     try {
-
       const res = await fetch(
         "https://www.flettedehvaler.dk/blodsukker/login.php",
         {
@@ -35,23 +34,15 @@
       );
 
       const data = await res.json();
-
       if (data.success === true) {
-
         localStorage.setItem("token", data.token);
-
         push("/logger");
-
+        loggedInState.loggenIn = true
       } else {
-
         error = "adgang nægtet";
-
       }
-
     } catch (e) {
-
       error = "adgang nægtet";
-
     }
   }
 </script>
@@ -135,10 +126,6 @@
   text-decoration: none;
   border-radius: 4px;
 }
-
-.links a:hover {
-  background: #eef4ff;
-}
   
 </style>
 
@@ -160,7 +147,7 @@
     <button on:click={login}>Log ind</button>
 
     <div class="links">
-      <a href="#/signup" use:link>Opret bruger</a>
+      <a href="#/signup" use:link style="text-align: left;">Opret bruger</a>
       <a href="#/forgot-password" use:link>Glemt password?</a>
     </div>
 

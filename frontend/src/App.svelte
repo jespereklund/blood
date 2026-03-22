@@ -6,24 +6,31 @@
   import Signup from "./routes/Signup.svelte"
   import ForgotPassword from "./routes/ForgotPassword.svelte"
   import Logger from "./routes/Logger.svelte"
-  import Grafer from "./routes/grafer.svelte"
+  import Maalinger from "./routes/Maalinger.svelte"
   import Log from "./routes/Log.svelte"
   import ResetPassword from "./routes/ResetPassword.svelte";
+  import { loggedInState } from "./LoggedIn.svelte";
+  import { onMount } from "svelte";
 
+  onMount(() => {
+    loggedInState.loggenIn = (localStorage.getItem("token") === null) ? false : true
+  })
 
   const routes = {
     "/": Login,
     "/signup": Signup,
     "/forgot-password": ForgotPassword,
     "/logger": Logger,
-    "/grafer": Grafer,
+    "/maalinger": Maalinger,
     "/log": Log,
     "/reset-password": ResetPassword
   }
 
-  function logout() {
+  function logout(e) {
     localStorage.removeItem("token")
+    loggedInState.loggenIn = false
     push("/");
+    e.preventDefault()
   }
 </script>
 
@@ -63,10 +70,13 @@
 
 <div class="topbar">
   <div class="title">Blodsukker Logger System</div>
-  <a class="navlink" href="#/" use:link>Login</a>
   <a class="navlink" href="#/logger" use:link>Logger</a>
-  <a class="navlink" href="#/grafer" use:link>Målinger</a>
-  <a class="navlink" href="" onclick={logout}>Logout</a>
+  <a class="navlink" href="#/maalinger" use:link>Målinger</a>
+  {#if loggedInState.loggenIn}
+    <a class="navlink" href="" onclick={logout}>Logout</a>
+  {:else}
+    <a class="navlink" href="#/" use:link>Login</a>  
+  {/if}
 </div>
 
 <div class="content">
