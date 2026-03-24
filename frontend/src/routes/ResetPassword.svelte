@@ -63,6 +63,9 @@
 			const data = await response.json();
 
 			success = !!data.success;
+			if (data.message) {
+				//console.log("url", window.location.origin)
+			}
 			message = data.message || "Noget gik galt";
 		} catch (err) {
 			message = "Serverfejl. Prøv igen.";
@@ -72,12 +75,49 @@
 	}
 </script>
 
-<style>
-	:global(body) {
-		font-family: Verdana, Geneva, Tahoma, sans-serif;
-		background: #f4f6f8;
-	}
+<div class="container">
+	<div class="box">
+		<h1>Nulstil password</h1>
 
+		{#if message}
+			<div class="message" class:success={success} class:error={!success}>
+				{message}
+			</div>
+		{/if}
+
+		{#if !success}
+			<div class="field">
+				<label for="password">Nyt password</label>
+				<input
+					id="password"
+					type="password"
+					bind:value={password}
+					placeholder="Nyt password"
+				>
+			</div>
+
+			<div class="field">
+				<label for="password_confirm">Gentag password</label>
+				<input
+					id="password_confirm"
+					type="password"
+					bind:value={password_confirm}
+					placeholder="Gentag password"
+				>
+			</div>
+
+			<button on:click={resetPassword} disabled={loading}>
+				{#if loading}
+					Gemmer...
+				{:else}
+					Gem nyt password
+				{/if}
+			</button>
+		{/if}
+	</div>
+</div>
+
+<style>
 	.container {
 		display: flex;
 		justify-content: center;
@@ -161,45 +201,3 @@
 		color: #b71c1c;
 	}
 </style>
-
-<div class="container">
-	<div class="box">
-		<h1>Nulstil password</h1>
-
-		{#if message}
-			<div class="message" class:success={success} class:error={!success}>
-				{message}
-			</div>
-		{/if}
-
-		{#if !success}
-			<div class="field">
-				<label for="password">Nyt password</label>
-				<input
-					id="password"
-					type="password"
-					bind:value={password}
-					placeholder="Nyt password"
-				>
-			</div>
-
-			<div class="field">
-				<label for="password_confirm">Gentag password</label>
-				<input
-					id="password_confirm"
-					type="password"
-					bind:value={password_confirm}
-					placeholder="Gentag password"
-				>
-			</div>
-
-			<button on:click={resetPassword} disabled={loading}>
-				{#if loading}
-					Gemmer...
-				{:else}
-					Gem nyt password
-				{/if}
-			</button>
-		{/if}
-	</div>
-</div>

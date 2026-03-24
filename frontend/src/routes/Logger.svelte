@@ -49,11 +49,6 @@
 </script>
 
 <style>
-  :global(body) {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background: #f4f6f8;
-  }
-
   .container {
     display: flex;
     justify-content: center;

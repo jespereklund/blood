@@ -36,7 +36,9 @@
       const data = await res.json();
       if (data.success === true) {
         localStorage.setItem("token", data.token);
+        window.location.href = window.location.href.split("?")[0]
         push("/logger");
+
         loggedInState.loggenIn = true
       } else {
         error = "adgang nægtet";
@@ -48,10 +50,6 @@
 </script>
 
 <style>
-  :global(body) {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    background: #f4f6f8;
-  }
 
   .container {
     display: flex;

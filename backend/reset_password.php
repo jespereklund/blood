@@ -77,7 +77,7 @@ try {
     if (!$row) {
         echo json_encode([
             'success' => false,
-            'message' => '1 Ugyldigt eller udløbet link'
+            'message' => 'Ugyldigt eller udløbet link'
         ]);
         exit;
     }
@@ -86,7 +86,7 @@ try {
     if (!empty($row['used_at'])) {
         echo json_encode([
             'success' => false,
-            'message' => '2 Linket er allerede brugt'
+            'message' => 'Linket er allerede brugt'
         ]);
         exit;
     }
@@ -95,7 +95,7 @@ try {
     if (strtotime($row['expires_at']) < time()) {
         echo json_encode([
             'success' => false,
-            'message' => '3 Linket er udløbet'
+            'message' => 'Linket er udløbet'
         ]);
         exit;
     }           
@@ -104,7 +104,7 @@ try {
     if (!password_verify($token, $row['token_hash'])) {
         echo json_encode([
             'success' => false,
-            'message' => '4 Ugyldigt eller udløbet link '.$token." ".$row['token_hash']
+            'message' => 'Ugyldigt eller udløbet link '.$token." ".$row['token_hash']
         ]);
         exit;
     }

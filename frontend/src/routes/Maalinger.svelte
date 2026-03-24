@@ -1,152 +1,157 @@
 <script>
-import { onMount } from "svelte";
-import { push } from "svelte-spa-router";
-import Chart from "chart.js/auto";
+    import { onMount } from "svelte";
+    import { push } from "svelte-spa-router";
+    import Chart from "chart.js/auto";
 
-let chart;
-let error = "";
-let logs = []; // gem data til tabel
+    let chart;
+    let error = "";
+    let logs = []; // gem data til tabel
 
-onMount(() => {
-if (localStorage.getItem("token") === null) {
-    push("/")
-}
-})
+    onMount(() => {
+        if (localStorage.getItem("token") === null) {
+            push("/");
+        }
+    });
 
-async function loadGraph() {
-    const token = localStorage.getItem("token");
-    if (!token) {
-        push("/");
-        return;
-    }
-    try {
-        const res = await fetch(
-            "https://www.flettedehvaler.dk/blodsukker/grafer.php",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    token
-                })
-            }
-        );
-
-        const data = await res.json();
-        if (!data.success) {
-            error = "Adgang nægtet";
+    async function loadGraph() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            push("/");
             return;
         }
-
-        logs = data.logs; // gem logs
-        const labels = logs.map(v => v.created_at);
-        const values = logs.map(v => v.blodsukker);
-        const ctx = document.getElementById("chart");
-
-        chart = new Chart(ctx, {
-            type: "line",
-            data: {
-                labels,
-                datasets: [
-                    {
-                        label: "Blodsukker",
-                        data: values,
-                        tension: 0.3
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        onClick: () => {} // disable klik på legend
+        try {
+            const res = await fetch(
+                "https://www.flettedehvaler.dk/blodsukker/grafer.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
                     },
-                    tooltip: {
-                        callbacks: {
-                            afterBody: function(context) {
-                                const index = context[0].dataIndex;
-                                const note = logs[index]?.note;
-                                return note ? `Note: ${note}` : "";
-                            }
-                        }
-                    }
-                }
+                    body: JSON.stringify({
+                        token,
+                    }),
+                },
+            );
+
+            const data = await res.json();
+            if (!data.success) {
+                error = "Adgang nægtet";
+                return;
             }
-        });
 
-    } catch (e) {
-        error = "Kunne ikke hente data";
+            logs = data.logs; // gem logs
+            const labels = logs.map((v) => v.created_at);
+            const values = logs.map((v) => v.blodsukker);
+            const ctx = document.getElementById("chart");
+
+            chart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: "Blodsukker",
+                            data: values,
+                            tension: 0.3,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            onClick: () => {}, // disable klik på legend
+                        },
+                        tooltip: {
+                            callbacks: {
+                                afterBody: function (context) {
+                                    const index = context[0].dataIndex;
+                                    const note = logs[index]?.note;
+                                    return note ? `Note: ${note}` : "";
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+        } catch (e) {
+            error = "Kunne ikke hente data";
+        }
     }
-}
 
-onMount(loadGraph);
+    onMount(loadGraph);
 </script>
 
-<style>
-
-.error {
-    color: red;
-}
-
-table {
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-}
-
-.chart-container {
-    width: 800px;
-    height: 600px;
-    margin: 0 auto; /* center graf */
-}
-
-.table-container {
-    display: flex;
-    justify-content: center; /* center tabel */
-    margin-top: 20px;
-}
-</style>
-
 <div>
+    <h1 style="text-align: center;">Målinger</h1>
 
-<h1 style="text-align: center;">Målinger</h1>
+    {#if error}
+        <p class="error">{error}</p>
+    {/if}
 
-{#if error}
-<p class="error">{error}</p>
-{/if}
+    <div class="chart-container">
+        <canvas id="chart"></canvas>
+    </div>
 
-<div class="chart-container">
-    <canvas id="chart"></canvas>
+    {#if logs.length > 0}
+        <h2 style="text-align: center;">Data</h2>
+
+        <div class="table-container">
+            <div class="table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dato</th>
+                            <th>Blodsukker</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {#each logs as log}
+                            <tr>
+                                <td>{log.created_at}</td>
+                                <td>{log.blodsukker}</td>
+                                <td>{log.note}</td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {/if}
 </div>
 
-{#if logs.length > 0}
-<h2 style="text-align: center;">Data</h2>
+<style>
+    .error {
+        color: red;
+    }
 
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Dato</th>
-<th>Blodsukker</th>
-<th>Note</th>
-</tr>
-</thead>
+    table {
+        border-collapse: collapse;
+    }
 
-<tbody>
-{#each logs as log}
-<tr>
-<td>{log.created_at}</td>
-<td>{log.blodsukker}</td>
-<td>{log.note}</td>
-</tr>
-{/each}
-</tbody>
-</table>
-</div>
-{/if}
+    th,
+    td {
+        border: 1px solid #ccc;
+        padding: 8px;
+    }
 
-</div>
+    .chart-container {
+                background-color: white;
+
+        width: 800px;
+        height: 420px;
+        margin: 0 auto; /* center graf */
+    }
+
+    .table-container {
+        display: flex;
+        justify-content: center; /* center tabel */
+        margin-top: 20px;
+    }
+
+    .table {
+        background-color: white;
+    }
+</style>

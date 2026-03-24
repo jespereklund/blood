@@ -7,7 +7,6 @@
   import ForgotPassword from "./routes/ForgotPassword.svelte"
   import Logger from "./routes/Logger.svelte"
   import Maalinger from "./routes/Maalinger.svelte"
-  import Log from "./routes/Log.svelte"
   import ResetPassword from "./routes/ResetPassword.svelte";
   import { loggedInState } from "./LoggedIn.svelte";
   import { onMount } from "svelte";
@@ -22,7 +21,6 @@
     "/forgot-password": ForgotPassword,
     "/logger": Logger,
     "/maalinger": Maalinger,
-    "/log": Log,
     "/reset-password": ResetPassword
   }
 
