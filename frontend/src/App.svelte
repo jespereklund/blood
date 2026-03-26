@@ -68,9 +68,9 @@
 
 <div class="topbar">
   <div class="title">Blodsukker Logger System</div>
-  <a class="navlink" href="#/logger" use:link>Logger</a>
-  <a class="navlink" href="#/maalinger" use:link>Målinger</a>
   {#if loggedInState.loggenIn}
+    <a class="navlink" href="#/logger" use:link>Logger</a>
+    <a class="navlink" href="#/maalinger" use:link>Målinger</a>
     <a class="navlink" href="" onclick={logout}>Logout</a>
   {:else}
     <a class="navlink" href="#/" use:link>Login</a>  
